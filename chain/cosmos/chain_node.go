@@ -702,6 +702,7 @@ func (tn *ChainNode) SendFunds(ctx context.Context, keyName string, amount ibc.W
 	_, err := tn.ExecTx(ctx,
 		keyName, "bank", "send", keyName,
 		amount.Address, fmt.Sprintf("%d%s", amount.Amount, amount.Denom),
+		"-b", "block",
 	)
 	return err
 }
