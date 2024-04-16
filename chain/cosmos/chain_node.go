@@ -504,6 +504,10 @@ func (tn *ChainNode) ExecTx(ctx context.Context, keyName string, command ...stri
 	if err := testutil.WaitForBlocks(ctx, 2, tn); err != nil {
 		return "", err
 	}
+	res, err := tn.TxHashToResponse(ctx, output.TxHash)
+	if err != nil || res.Code != 0 {
+		return output.TxHash, fmt.Errorf("transaction failed with code %d: %s", res.Code, res.RawLog)
+	}
 	return output.TxHash, nil
 }
 
