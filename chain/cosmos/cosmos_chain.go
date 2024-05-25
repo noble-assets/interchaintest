@@ -29,7 +29,6 @@ import (
 	"go.uber.org/zap"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 )
 
 // CosmosChain is a local docker testnet for a Cosmos SDK chain.
@@ -449,7 +448,7 @@ func (c *CosmosChain) ExportState(ctx context.Context, height int64) (string, er
 func (c *CosmosChain) GetBalance(ctx context.Context, address string, denom string) (int64, error) {
 	params := &bankTypes.QueryBalanceRequest{Address: address, Denom: denom}
 	grpcAddress := c.getFullNode().hostGRPCPort
-	conn, err := grpc.Dial(grpcAddress, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial(grpcAddress, grpc.WithTransportCredentials(NewCredentials()))
 	if err != nil {
 		return 0, err
 	}
@@ -469,7 +468,7 @@ func (c *CosmosChain) GetBalance(ctx context.Context, address string, denom stri
 func (c *CosmosChain) AllBalances(ctx context.Context, address string) (types.Coins, error) {
 	params := bankTypes.QueryAllBalancesRequest{Address: address}
 	grpcAddress := c.getFullNode().hostGRPCPort
-	conn, err := grpc.Dial(grpcAddress, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial(grpcAddress, grpc.WithTransportCredentials(NewCredentials()))
 	if err != nil {
 		return nil, err
 	}
