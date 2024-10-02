@@ -572,6 +572,20 @@ neutron:
       uid-gid: 1025:1025
   no-host-mount: false
 
+noble:
+  name: noble
+  type: cosmos
+  bin: nobled
+  bech32-prefix: noble
+  denom: ustake
+  gas-prices: 0.0ustake
+  gas-adjustment: 2.0
+  trusting-period: "504h"
+  images:
+    - repository: ghcr.io/strangelove-ventures/heighliner/noble
+      uid-gid: 1025:1025
+  no-host-mount: false
+
 omniflixhub:
   name: omniflixhub
   type: cosmos
