@@ -476,7 +476,7 @@ func (c *PenumbraChain) Start(_ string, ctx context.Context, additionalGenesisWa
 	for i, val := range c.PenumbraNodes[:c.numValidators] {
 		// Use an errgroup to save some time doing many concurrent copies inside containers.
 		eg.Go(func() error {
-			firstValPrivKeyRelPath := fmt.Sprintf(".penumbra/testnet_data/node%d/cometbft/config/priv_validator_key.json", i)
+			firstValPrivKeyRelPath := fmt.Sprintf(".penumbra/network_data/node%d/cometbft/config/priv_validator_key.json", i)
 
 			fr := dockerutil.NewFileRetriever(c.log, firstVal.PenumbraAppNode.DockerClient, firstVal.PenumbraAppNode.TestName)
 			pk, err := fr.SingleFileContent(egCtx, firstVal.PenumbraAppNode.VolumeName, firstValPrivKeyRelPath)

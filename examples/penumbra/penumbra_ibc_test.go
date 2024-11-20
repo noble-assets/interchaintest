@@ -36,7 +36,7 @@ func TestPenumbraToPenumbraIBC(t *testing.T) {
 	chains, err := interchaintest.NewBuiltinChainFactory(zaptest.NewLogger(t), []*interchaintest.ChainSpec{
 		{
 			Name:    "penumbra",
-			Version: "v0.78.0,v0.37.5",
+			Version: "v0.80.8,v0.37.11",
 			ChainConfig: ibc.ChainConfig{
 				ChainID: "penumbraA-0",
 			},
@@ -45,7 +45,7 @@ func TestPenumbraToPenumbraIBC(t *testing.T) {
 		},
 		{
 			Name:    "penumbra",
-			Version: "v0.78.0,v0.37.5",
+			Version: "v0.80.8,v0.37.11",
 			ChainConfig: ibc.ChainConfig{
 				ChainID: "penumbraB-0",
 			},

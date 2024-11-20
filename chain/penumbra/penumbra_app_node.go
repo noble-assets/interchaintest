@@ -179,10 +179,11 @@ func (p *PenumbraAppNode) FullViewingKey(ctx context.Context, keyName string) (s
 // RecoverKey restores a key from a given mnemonic.
 func (p *PenumbraAppNode) RecoverKey(ctx context.Context, keyName, mnemonic string) error {
 	keyPath := filepath.Join(p.HomeDir(), "keys", keyName)
+	pdURL := fmt.Sprintf("http://%s:8080", p.HostName())
 	cmd := []string{
 		"sh",
 		"-c",
-		fmt.Sprintf(`echo %q | pcli --home %s init soft-kms import-phrase`, mnemonic, keyPath),
+		fmt.Sprintf(`echo %q | pcli --home %s init --grpc-url %s soft-kms import-phrase `, mnemonic, keyPath, pdURL),
 	}
 
 	_, stderr, err := p.Exec(ctx, cmd, nil)
@@ -231,7 +232,7 @@ func (p *PenumbraAppNode) AllocationsInputFileContainer() string {
 // network that we are attempting to initialize from genesis.
 func (p *PenumbraAppNode) genesisFileContent(ctx context.Context) ([]byte, error) {
 	fr := dockerutil.NewFileRetriever(p.log, p.DockerClient, p.TestName)
-	gen, err := fr.SingleFileContent(ctx, p.VolumeName, ".penumbra/testnet_data/node0/cometbft/config/genesis.json")
+	gen, err := fr.SingleFileContent(ctx, p.VolumeName, ".penumbra/network_data/node0/cometbft/config/genesis.json")
 	if err != nil {
 		return nil, fmt.Errorf("error getting genesis.json content: %w", err)
 	}
@@ -269,7 +270,7 @@ func (p *PenumbraAppNode) GenerateGenesisFile(
 
 	cmd := []string{
 		"pd",
-		"testnet",
+		"network",
 		"generate",
 		"--chain-id", chainID,
 		"--preserve-chain-id",
@@ -278,7 +279,7 @@ func (p *PenumbraAppNode) GenerateGenesisFile(
 	}
 	_, _, err = p.Exec(ctx, cmd, nil)
 	if err != nil {
-		return fmt.Errorf("failed to exec testnet generate: %w", err)
+		return fmt.Errorf("failed to exec network generate: %w", err)
 	}
 
 	return err
